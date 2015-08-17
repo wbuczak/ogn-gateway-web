@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OGN statistics</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+  <script>
+
+  var baseUrl="http://wbuczak-odroid.no-ip.org:8090";
+
+  var initCharts = function(dateText) {
+     var chartUrl1 = baseUrl+"/ogn-gateway-web/charts/toprec-range/"+dateText+"/20";
+     document.getElementById("chart").innerHTML = "<img src="+"'"+chartUrl1+"'"+"/>";
+
+     var chartUrl2 = baseUrl+"/ogn-gateway-web/charts/toprec-count/"+dateText+"/20";
+     document.getElementById("chart2").innerHTML = "<img src="+"'"+chartUrl2+"'"+"/>";
+
+  };
+
+  $(function() {
+     
+     $("#date").datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function(dateText, inst)
+            {
+               initCharts(dateText);
+            }
+    }).datepicker("setDate",new Date());
+
+  });
+
+  $( document ).ready(function() {
+    initCharts(document.getElementById("date").value);
+  });
+
+  </script>
+</head>
+<body>
+
+<p>Date: <input type="text" name="date" id="date"></p>
+
+<h2>Top20 receives by the reception range</h2>
+<div id="chart"> </div>
+<h2>Top20 receives by the number of received beacons</h2>
+<div id="chart2"> </div>
+
+</body>
+</html>
