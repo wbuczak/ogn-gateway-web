@@ -90,7 +90,7 @@ public class ChartController {
 
 		JFreeChart chart = ChartUtils.createBarChart(dataset,
 				String.format("OGN Top %d receivers by number of received beacons", limit), new String[] { "Receiver",
-						"beacons count" });
+						"aircraft beacons count" });
 
 		int height = 600;
 
@@ -114,7 +114,7 @@ public class ChartController {
 
 		JFreeChart chart = ChartUtils.createBarChart(dataset,
 				String.format("OGN Top %d (%s)", limit, date), new String[] {
-						"Receiver", "beacons count" });
+						"Receiver", "aircraft beacons count" });
 
 		int height = 600;
 
