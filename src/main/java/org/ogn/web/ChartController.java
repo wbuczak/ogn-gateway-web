@@ -26,7 +26,7 @@ public class ChartController {
 	public void setDao(StatsDAO dao) {
 		this.dao = dao;
 	}
-
+	
 	@RequestMapping(value = "/activerec", method = RequestMethod.GET)
 	public void drawActiveReceiversChart(HttpServletResponse response) {
 		response.setContentType("image/png");

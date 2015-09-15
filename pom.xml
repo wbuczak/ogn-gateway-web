@@ -19,6 +19,12 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.ogn</groupId>
+			<artifactId>ogn-commons-java</artifactId>
+			<version>[,1.0.0)</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.ogn.gateway.plugin</groupId>
 			<artifactId>ogn-gateway-stats</artifactId>
 			<version>1.0.0</version>
@@ -89,7 +95,26 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.1</version>
+			<optional>true</optional>
+		</dependency>
 
+		<!-- SLF4j-log4j binding -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+
+		<!-- JSTL -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -105,6 +130,16 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.1</version>
+<!-- 				<configuration> -->
+<!-- 					<path>/</path> -->
+<!-- 				</configuration> -->
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

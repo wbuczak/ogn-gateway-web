@@ -12,6 +12,8 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
+    <mvc:annotation-driven />
+    
 	<context:property-placeholder location="classpath:db.properties"
 		ignore-resource-not-found="true" ignore-unresolvable="true" />
 
@@ -19,16 +21,11 @@
 
 	<context:component-scan base-package="org.ogn.web,org.ogn.gateway.plugin.stats.dao" />
 
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-
-<!-- 	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"> -->
-<!-- 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /> -->
-<!-- 		<property name="prefix" value="WEB-INF/jsp/" /> -->
+<!-- 	<bean -->
+<!-- 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+<!-- 		<property name="prefix" value="/WEB-INF/jsp/" /> -->
 <!-- 		<property name="suffix" value=".jsp" /> -->
 <!-- 	</bean> -->
+
 
 </beans>
