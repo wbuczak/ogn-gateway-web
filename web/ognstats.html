@@ -10,15 +10,20 @@
 
   <script>
 
-  var baseUrl="http://wbuczak-odroid.no-ip.org:8090";
+  var baseUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com:8080";
 
-  var initCharts = function(dateText) {
+  var init = function(dateText) {
      var chartUrl1 = baseUrl+"/ogn-gateway-web/charts/toprec-range/"+dateText+"/20";
      document.getElementById("chart").innerHTML = "<img src="+"'"+chartUrl1+"'"+"/>";
 
      var chartUrl2 = baseUrl+"/ogn-gateway-web/charts/toprec-count/"+dateText+"/20";
      document.getElementById("chart2").innerHTML = "<img src="+"'"+chartUrl2+"'"+"/>";
+     
+     var tableUrl1 = "reception-range.html?date="+dateText;
+     document.getElementById("iframe1").src = tableUrl1;
 
+     var tableUrl2 = "beacons-count.html?date="+dateText;
+     document.getElementById("iframe2").src = tableUrl2;
   };
 
   $(function() {
@@ -27,14 +32,14 @@
         dateFormat: "yy-mm-dd",
         onSelect: function(dateText, inst)
             {
-               initCharts(dateText);
+               init(dateText);
             }
     }).datepicker("setDate",new Date());
 
   });
 
   $( document ).ready(function() {
-    initCharts(document.getElementById("date").value);
+    init(document.getElementById("date").value);
   });
 
   </script>
@@ -43,10 +48,29 @@
 
 <p>Date: <input type="text" name="date" id="date"></p>
 
-<h2>Top20 receives by the reception range</h2>
-<div id="chart"> </div>
-<h2>Top20 receives by the number of received beacons</h2>
-<div id="chart2"> </div>
+<h2>Reception range</h2>
+<table>
+  <tr>
+    <td><div id="chart"> </div> </td>
+    <td>
+        <iframe id="iframe1" width="420" height="584">
+           Sorry your browser does not support inline frames.
+        </iframe>
+    </td>
+  </tr>
+</table>
+
+<h2>Number of received beacons</h2>
+<table>
+  <tr>
+    <td><div id="chart2"> </div> </td>
+    <td>
+        <iframe id="iframe2" width="420" height="584">
+           Sorry your browser does not support inline frames.
+        </iframe>
+    </td>
+  </tr>
+</table>
 
 </body>
 </html>
