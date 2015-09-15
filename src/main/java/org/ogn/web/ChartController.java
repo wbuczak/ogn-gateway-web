@@ -29,9 +29,14 @@ public class ChartController {
 	
 	@RequestMapping(value = "/activerec", method = RequestMethod.GET)
 	public void drawActiveReceiversChart(HttpServletResponse response) {
+		drawActiveReceiversChart(response,30);
+	}
+	
+	@RequestMapping(value = "/activerec/{days}", method = RequestMethod.GET)
+	public void drawActiveReceiversChart(HttpServletResponse response,@PathVariable("days") int days) {
 		response.setContentType("image/png");
 
-		List<Map<String, Object>> activeReceivers = dao.getActiveReceiversCount(30);
+		List<Map<String, Object>> activeReceivers = dao.getActiveReceiversCount(days);
 
 		XYDataset dataset = ChartUtils.createXYDataSet(activeReceivers);
 		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN active receivers");
