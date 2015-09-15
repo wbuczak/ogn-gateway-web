@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>angular.js example</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+  
+  <script>
+  
+     var params = function() {
+       function urldecode(str) {
+           return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+       }
+
+       function transformToAssocArray( prmstr ) {
+           var params = {};
+           var prmarr = prmstr.split("&");
+           for ( var i = 0; i < prmarr.length; i++) {
+               var tmparr = prmarr[i].split("=");
+               params[tmparr[0]] = urldecode(tmparr[1]);
+           }
+           return params;
+       }
+
+       var prmstr = window.location.search.substr(1);
+       return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+     }();
+
+     console.log('someParam GET value is', params['date']);
+
+     var baseServiceUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com:8080";
+     var context="/ogn-gateway-web/rest";
+
+     var myUrl = baseServiceUrl + context + "/toprange-all/" + params['date'];
+     
+     console.log(myUrl);
+  
+     var myApp = angular.module('myApp', []);
+     myApp.controller('Ctrl1', function($scope, $http) {
+           $http.get( myUrl ).success(function(data) {
+              $scope.data = data;
+           });
+     });
+  </script>
+  
+  <style type="text/css">
+    .odd {
+       background-color:#eee;
+    }
+    .even {
+       background-color:#fff;
+    }
+  </style>
+
+</head>
+
+<body ng-controller="Ctrl1">
+  Search: <input ng-model="query" type="text" />
+  <table>
+    <tr>
+      <th>receiver</th>
+      <th>range [km]</th>
+      <th>alt [m]</th>
+      <th>aircraft reg</th>
+      <th>aircraft id</th>
+     </tr>
+     <tr ng-repeat="d in data | filter:query | orderBy:'-range'" ng-class-odd="'odd'" ng-class-even="'even'">
+       <td> {{ d.receiver_name }} </td>
+       <td> {{ d.range }} </td>
+       <td> {{ d.alt }} </td>
+       <td> {{ d.aircraft_reg }} </td>
+       <td> {{ d.aircraft_id }} </td>
+     </tr>
+   </table>
+</body>
+</html>

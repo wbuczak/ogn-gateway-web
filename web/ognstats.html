@@ -10,19 +10,20 @@
 
   <script>
 
-  var baseUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com:8080";
+  var baseUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com";
+  var baseServiceUrl=baseUrl+":8080";
 
   var init = function(dateText) {
-     var chartUrl1 = baseUrl+"/ogn-gateway-web/charts/toprec-range/"+dateText+"/20";
+     var chartUrl1 = baseServiceUrl+"/ogn-gateway-web/charts/toprec-range/"+dateText+"/20";
      document.getElementById("chart").innerHTML = "<img src="+"'"+chartUrl1+"'"+"/>";
 
-     var chartUrl2 = baseUrl+"/ogn-gateway-web/charts/toprec-count/"+dateText+"/20";
+     var chartUrl2 = baseServiceUrl+"/ogn-gateway-web/charts/toprec-count/"+dateText+"/20";
      document.getElementById("chart2").innerHTML = "<img src="+"'"+chartUrl2+"'"+"/>";
      
-     var tableUrl1 = "reception-range.html?date="+dateText;
+     var tableUrl1 = baseUrl+"/reception-range.html?date="+dateText;
      document.getElementById("iframe1").src = tableUrl1;
 
-     var tableUrl2 = "beacons-count.html?date="+dateText;
+     var tableUrl2 = baseUrl+"/beacons-count.html?date="+dateText;
      document.getElementById("iframe2").src = tableUrl2;
   };
 
