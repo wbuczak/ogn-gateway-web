@@ -6,26 +6,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
   
-  <script>
+  <script type="text/javascript" src="func.js"></script>
   
-     var params = function() {
-       function urldecode(str) {
-           return decodeURIComponent((str+'').replace(/\+/g, '%20'));
-       }
-
-       function transformToAssocArray( prmstr ) {
-           var params = {};
-           var prmarr = prmstr.split("&");
-           for ( var i = 0; i < prmarr.length; i++) {
-               var tmparr = prmarr[i].split("=");
-               params[tmparr[0]] = urldecode(tmparr[1]);
-           }
-           return params;
-       }
-
-       var prmstr = window.location.search.substr(1);
-       return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-     }();
+  <script>
 
      console.log('someParam GET value is', params['date']);
      
@@ -41,6 +24,9 @@
            $http.get( myUrl ).success(function(data) {
               $scope.data = data;
            });
+
+           $scope.sortField = 'count';
+           $scope.reverse = true;
      });
   </script>
   
@@ -59,10 +45,10 @@
   Search: <input ng-model="query" type="text" />
   <table>
     <tr>
-      <th>receiver</th>
-      <th>aircraft beacons count</th>
+      <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>
+      <th><a href="" ng-click="sortField = 'count'; reverse = !reverse">count</a></th>
      </tr>
-     <tr ng-repeat="d in data | filter:query | orderBy:'-count'" ng-class-odd="'odd'" ng-class-even="'even'">
+     <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> {{ d.receiver_name }} </td>
        <td> {{ d.count }} </td>
      </tr>
