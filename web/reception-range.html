@@ -2,7 +2,7 @@
 <html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
-  <title>angular.js example</title>
+  <title>OGN reception range</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
   
@@ -52,7 +52,7 @@
       <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
      </tr>
      <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
-       <td> {{ d.receiver_name }} </td>
+       <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>
        <td> {{ d.range }} </td>
        <td> {{ d.alt }} </td>
        <td> {{ d.aircraft_reg }} </td>
