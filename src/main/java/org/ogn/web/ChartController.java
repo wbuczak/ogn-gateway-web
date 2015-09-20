@@ -116,7 +116,7 @@ public class ChartController {
 		List<Map<String, Object>> list = dao.getTopAltRecords(d, limit);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list,
-				ChartType.TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS);
+				ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
 
 		JFreeChart chart = ChartUtils.createBarChart(dataset,
 				String.format("OGN Top %d altitudes", limit), new String[] { "Receiver",
