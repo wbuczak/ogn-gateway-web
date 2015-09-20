@@ -54,7 +54,7 @@
      <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>
        <td> {{ d.range }} </td>
-       <td> {{ d.alt }} </td>
+       <td> {{ d.alt | number }} </td>
        <td> {{ d.aircraft_reg }} </td>
        <td> {{ d.aircraft_id }} </td>
      </tr>

@@ -50,7 +50,7 @@
      </tr>
      <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>
-       <td> {{ d.count }} </td>
+       <td> {{ d.count | number }} </td>
      </tr>
    </table>
 </body>
