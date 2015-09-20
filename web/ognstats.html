@@ -20,11 +20,17 @@
      var chartUrl2 = baseServiceUrl+"/ogn-gateway-web/charts/toprec-count/"+dateText+"/20";
      document.getElementById("chart2").innerHTML = "<img src="+"'"+chartUrl2+"'"+"/>";
      
+     var chartUrl3 = baseServiceUrl+"/ogn-gateway-web/charts/topalt/"+dateText+"/20";
+     document.getElementById("chart3").innerHTML = "<img src="+"'"+chartUrl3+"'"+"/>";
+      
      var tableUrl1 = baseUrl+"/reception-range.html?date="+dateText;
      document.getElementById("iframe1").src = tableUrl1;
 
      var tableUrl2 = baseUrl+"/beacons-count.html?date="+dateText;
      document.getElementById("iframe2").src = tableUrl2;
+     
+     var tableUrl3 = baseUrl+"/reception-maxalt.html?date="+dateText;
+     document.getElementById("iframe3").src = tableUrl3;
   };
 
   $(function() {
@@ -67,6 +73,18 @@
     <td><div id="chart2"> </div> </td>
     <td>
         <iframe id="iframe2" width="420" height="584">
+           Sorry your browser does not support inline frames.
+        </iframe>
+    </td>
+  </tr>
+</table>
+
+<h2>Number of received aircraft beacons</h2>
+<table>
+  <tr>
+    <td><div id="chart3"> </div> </td>
+    <td>
+        <iframe id="iframe3" width="420" height="584">
            Sorry your browser does not support inline frames.
         </iframe>
     </td>

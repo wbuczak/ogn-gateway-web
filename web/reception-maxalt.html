@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>OGN reception max altitude</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+  
+  <script type="text/javascript" src="func.js"></script>
+  
+  <script>
+  
+     console.log('someParam GET value is', params['date']);
+
+     var baseServiceUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com:8080";
+     var context="/ogn-gateway-web/rest";
+
+     var myUrl = baseServiceUrl + context + "/topalt-all/" + params['date'];
+     
+     console.log(myUrl);
+  
+     var myApp = angular.module('myApp', []);
+     myApp.controller('Ctrl1', function($scope, $http) {
+           $http.get( myUrl ).success(function(data) {
+              $scope.data = data;
+           });
+           
+           $scope.sortField = 'range';
+           $scope.reverse = true;
+           
+           $scope.greaterThan = function(prop, val){
+             return function(item){
+               return item[prop] > val;
+             }
+           }
+     });
+  </script>
+  
+  <style type="text/css">
+    .odd {
+       background-color:#eee;
+    }
+    .even {
+       background-color:#fff;
+    }
+  </style>
+
+
+</head>
+
+<body ng-controller="Ctrl1">
+  Search: <input ng-model="query" type="text" />
+  <table>
+    <tr>
+      <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>      
+      <th><a href="" ng-click="sortField = 'max_alt'; reverse = !reverse">max alt [m]</a></th>
+     </tr>
+     <tr ng-repeat="d in data | filter: greaterThan('max_alt', 0) | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
+       <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
+       <td> {{ d.max_alt | number }} </td>  
+     </tr>
+   </table>
+</body>
+</html>

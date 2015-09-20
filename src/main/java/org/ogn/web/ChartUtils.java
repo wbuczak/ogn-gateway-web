@@ -89,14 +89,14 @@ public class ChartUtils {
 		return jfreechart;
 	}
 
-	public static CategoryDataset createCategoryDataset(List<Map<String, Object>> topRangeList, ChartType type) {
+	public static CategoryDataset createCategoryDataset(List<Map<String, Object>> topList, ChartType type) {
 		DefaultCategoryDataset dset = new DefaultCategoryDataset();
 
 		switch (type) {
 
 		case TOP_RECEIVERS_BY_RANGE:
 
-			for (Map<String, Object> r : topRangeList) {
+			for (Map<String, Object> r : topList) {
 				dset.addValue((float) r.get("range"), "S1", (String) r.get("receiver_name"));
 			}
 
@@ -104,11 +104,20 @@ public class ChartUtils {
 
 		case TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS:
 
-			for (Map<String, Object> r : topRangeList) {
+			for (Map<String, Object> r : topList) {
 				dset.addValue((int) r.get("count"), "S1", (String) r.get("receiver_name"));
 			}
 
 			break;
+
+		case TOP_RECEIVERS_BY_MAX_RECEPTION_ALT:
+
+			for (Map<String, Object> r : topList) {
+				dset.addValue((int) r.get("max_alt"), "S1", (String) r.get("receiver_name"));
+			}
+
+			break;
+
 		}// switch
 
 		return dset;
