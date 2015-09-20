@@ -113,7 +113,7 @@ public class ChartUtils {
 		case TOP_RECEIVERS_BY_MAX_RECEPTION_ALT:
 
 			for (Map<String, Object> r : topList) {
-				dset.addValue((int) r.get("max_alt"), "S1", (String) r.get("receiver_name"));
+				dset.addValue((float) r.get("max_alt"), "S1", (String) r.get("receiver_name"));
 			}
 
 			break;
