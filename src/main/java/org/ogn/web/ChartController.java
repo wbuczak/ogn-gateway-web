@@ -122,7 +122,7 @@ public class ChartController {
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
 
 		JFreeChart chart = ChartUtils.createBarChart(dataset, String.format("OGN Top %d altitudes", limit),
-				new String[] { "Receiver", "aircraft alt" });
+				new String[] { "Receiver", "aircraft alt [m]" });
 
 		int height = 600;
 
