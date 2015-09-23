@@ -45,18 +45,20 @@
   Search: <input ng-model="query" type="text" />
   <table>
     <tr>
-      <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>
+      <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>            
       <th><a href="" ng-click="sortField = 'range'; reverse = !reverse">range [km]</a></th>
       <th><a href="" ng-click="sortField = 'alt'; reverse = !reverse">alt [m]</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
+      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse">time</a></th>
      </tr>
      <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
-       <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>
+       <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
        <td> {{ d.range }} </td>
        <td> {{ d.alt | number }} </td>
        <td> {{ d.aircraft_reg }} </td>
        <td> {{ d.aircraft_id }} </td>
+       <td> {{ d.timestamp | date:'HH:mm:ss' }} </td>
      </tr>
    </table>
 </body>
