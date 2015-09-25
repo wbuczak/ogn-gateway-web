@@ -46,11 +46,11 @@
   <table>
     <tr>
       <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>            
-      <th><a href="" ng-click="sortField = 'range'; reverse = !reverse">range [km]</a></th>
-      <th><a href="" ng-click="sortField = 'alt'; reverse = !reverse">alt [m QNH]</a></th>
+      <th><a href="" ng-click="sortField = 'range'; reverse = !reverse" title="distance in km">range</a></th>
+      <th><a href="" ng-click="sortField = 'alt'; reverse = !reverse" title="altitude in m (QNH)">alt</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
-      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse">time</a></th>
+      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse" title="UTC time">time</a></th>
      </tr>
      <tr ng-repeat="d in data | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
