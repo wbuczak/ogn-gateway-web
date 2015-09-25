@@ -53,10 +53,10 @@
   <table>
     <tr>
       <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>      
-      <th><a href="" ng-click="sortField = 'max_alt'; reverse = !reverse">max alt [m QNH]</a></th>
+      <th><a href="" ng-click="sortField = 'max_alt'; reverse = !reverse" title="altitude in m (QNH)">max alt</th>
       <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
-      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse">time</a></th>
+      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse" title="UTC time">time</a></th>
      </tr>
      <tr ng-repeat="d in data | filter: greaterThan('max_alt', 0) | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
