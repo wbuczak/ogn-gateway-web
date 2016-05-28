@@ -3,7 +3,9 @@ package org.ogn.web;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -53,11 +55,11 @@ public class ChartUtils {
 
 		TimeSeries s1 = new TimeSeries("OGN Active Receivers");
 
-		Calendar cal = Calendar.getInstance();
-
 		for (Map<String, Object> r : activeReceivers) {
-			cal.setTimeInMillis((long) r.get("date"));
-			s1.add(new Day(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)),
+			Instant timestamp = Instant.ofEpochMilli((long) r.get("date"));
+			LocalDateTime datetime = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC);
+
+			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()),
 					(int) r.get("count"));
 		}
 

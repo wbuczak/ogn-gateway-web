@@ -9,7 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.ogn.gateway.plugin.stats.TimeDateUtils;
-import org.ogn.gateway.plugin.stats.dao.StatsDAO;
+import org.ogn.gateway.plugin.stats.service.StatsReceiversService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/charts")
 public class ChartController {
 
-	private StatsDAO dao;
+	private StatsReceiversService rService;
 
 	@Autowired
-	public void setDao(StatsDAO dao) {
-		this.dao = dao;
+	public void setReceiversService(StatsReceiversService service) {
+		this.rService = service;
 	}
 
 	@RequestMapping(value = "/activerec", method = RequestMethod.GET)
@@ -36,7 +36,7 @@ public class ChartController {
 	public void drawActiveReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
-		List<Map<String, Object>> activeReceivers = dao.getActiveReceiversCount(days);
+		List<Map<String, Object>> activeReceivers = rService.getActiveReceiversCounters(days);
 
 		XYDataset dataset = ChartUtils.createXYDataSet(activeReceivers);
 		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN active receivers");
@@ -63,12 +63,12 @@ public class ChartController {
 			label = String.format("OGN Top %d ranges", count);
 		}
 
-		List<Map<String, Object>> topRangeList = d > 0 ? dao.getTopRangeRecords(d, count) : dao
-				.getTopRangeRecords(count);
+		List<Map<String, Object>> topRangeList = d > 0 ? rService.getTopMaxRanges(d, count)
+				: rService.getTopMaxRanges(count);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(topRangeList, ChartType.TOP_RECEIVERS_BY_RANGE);
-		JFreeChart chart = ChartUtils.createBarChart(dataset, label, new String[] { "Receiver",
-				"max. reception range [km]" });
+		JFreeChart chart = ChartUtils.createBarChart(dataset, label,
+				new String[] { "Receiver", "max. reception range [km]" });
 
 		int height = 600;
 
@@ -93,7 +93,8 @@ public class ChartController {
 		if (date != null)
 			d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = d > 0 ? dao.getTopCountRecords(d, limit) : dao.getTopCountRecords(limit);
+		List<Map<String, Object>> list = d > 0 ? rService.getTopReceptionCounters(d, limit)
+				: rService.getTopReceptionCounters(limit);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list,
 				ChartType.TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS);
@@ -117,7 +118,7 @@ public class ChartController {
 
 		long d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = dao.getTopAltRecords(d, limit);
+		List<Map<String, Object>> list = rService.getMaxAlts(d, limit);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
 

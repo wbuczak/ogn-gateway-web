@@ -23,18 +23,16 @@ public class StatsRESTController {
 	}
 
 	@RequestMapping(value = "/activerec/{days}", method = RequestMethod.GET)
-	public List<Map<String, Object>> jsonActiveReceivers(@PathVariable("days") int days) {
-		return dao.getActiveReceiversCount(days);
-	}
-
-	@RequestMapping(value = "/activerec-all", method = RequestMethod.GET)
-	public List<Map<String, Object>> jsonActiveReceivers() {
-		return jsonActiveReceivers(0);
+	public List<Map<String, Object>> jsonActiveReceivers(@PathVariable("days") String days) {
+		if (0 == days.length())
+			return dao.getActiveReceiversCounters(0);
+		else
+			return dao.getActiveReceiversCounters(Integer.parseInt(days));
 	}
 
 	@RequestMapping(value = "/toprange/{count}", method = RequestMethod.GET)
 	public List<Map<String, Object>> jsonTopRangeReceivers(@PathVariable("count") int count) {
-		return dao.getTopRangeRecords(count);
+		return dao.getTopMaxRanges(count);
 	}
 
 	@RequestMapping(value = "/toprange-all/{date}", method = RequestMethod.GET)
@@ -46,14 +44,14 @@ public class StatsRESTController {
 	public List<Map<String, Object>> jsonTopRangeReceivers(@PathVariable("date") String date,
 			@PathVariable("count") int count) {
 		long d = TimeDateUtils.fromString(date);
-		return dao.getTopRangeRecords(d, count);
+		return dao.getTopMaxRanges(d, count);
 	}
 
 	@RequestMapping(value = "/topcount/{date}/{count}", method = RequestMethod.GET)
 	public List<Map<String, Object>> jsonTopCountReceivers(@PathVariable("date") String date,
 			@PathVariable("count") int count) {
 		long d = TimeDateUtils.fromString(date);
-		return dao.getTopCountRecords(d, count);
+		return dao.getTopReceptionCounters(d, count);
 	}
 
 	@RequestMapping(value = "/topcount-all/{date}", method = RequestMethod.GET)
@@ -70,7 +68,7 @@ public class StatsRESTController {
 	private List<Map<String, Object>> jsonTopAltReceivers(@PathVariable("date") String date,
 			@PathVariable("limit") int limit) {
 		long d = TimeDateUtils.fromString(date);
-		return dao.getTopAltRecords(d, limit);
+		return dao.getMaxAlts(d, limit);
 	}
 
 }
