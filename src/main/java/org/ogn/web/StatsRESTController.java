@@ -65,7 +65,7 @@ public class StatsRESTController {
 	}
 
 	@RequestMapping(value = "/topalt-all/{date}/{limit}", method = RequestMethod.GET)
-	private List<Map<String, Object>> jsonTopAltReceivers(@PathVariable("date") String date,
+	public List<Map<String, Object>> jsonTopAltReceivers(@PathVariable("date") String date,
 			@PathVariable("limit") int limit) {
 		long d = TimeDateUtils.fromString(date);
 		return dao.getMaxAlts(d, limit);
