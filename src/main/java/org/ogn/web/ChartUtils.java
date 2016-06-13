@@ -16,6 +16,7 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -39,14 +40,30 @@ public class ChartUtils {
 		}
 	}
 
+	static class LastValueXYItemLabelGenerator extends StandardXYItemLabelGenerator {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String generateLabel(XYDataset dataset, int series, int item) {
+			if (item == dataset.getItemCount(0) - 1)
+				return "" + dataset.getY(0, item).intValue();
+			else
+				return "";
+		}
+	}
+
 	public static JFreeChart createTimeSeriesChart(XYDataset dataset, String chartTitle, String yLabel) {
 		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "date", yLabel, dataset, true, false,
 				false);
 
 		XYPlot plot = chart.getXYPlot();
+
 		plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		DateAxis axis = (DateAxis) plot.getDomainAxis();
 		axis.setDateFormatOverride(new SimpleDateFormat("dd-MM-YY"));
+
+		plot.getRenderer().setBaseItemLabelGenerator(new LastValueXYItemLabelGenerator());
+		plot.getRenderer().setBaseItemLabelsVisible(true);
 
 		return chart;
 	}
