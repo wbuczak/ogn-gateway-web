@@ -39,9 +39,9 @@ public class ChartUtils {
 		}
 	}
 
-	public static JFreeChart createTimeSeriesChart(XYDataset dataset, String title) {
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(title, "date", "active receivers", dataset, true,
-				false, false);
+	public static JFreeChart createTimeSeriesChart(XYDataset dataset, String chartTitle, String yLabel) {
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "date", yLabel, dataset, true, false,
+				false);
 
 		XYPlot plot = chart.getXYPlot();
 		plot.getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -70,31 +70,12 @@ public class ChartUtils {
 		return dataset;
 	}
 
-//	public static XYDataset createXYDataSet(List<Map<String, Object>> dailyStats) {
-//
-//		TimeSeries s1 = new TimeSeries("OGN Online Receivers");
-//
-//		for (Map<String, Object> r : dailyStats) {
-//			Instant timestamp = Instant.ofEpochMilli((long) r.get("date"));
-//			LocalDateTime datetime = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC);
-//
-//			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()),
-//					(int) r.get("online_receivers"));
-//		}
-//
-//		final TimeSeries mav = MovingAverage.createMovingAverage(s1, "average", 30, 3);
-//
-//		final TimeSeriesCollection dataset = new TimeSeriesCollection();
-//		dataset.addSeries(s1);
-//		dataset.addSeries(mav);
-//		return dataset;
-//	}
-
 	public static JFreeChart createBarChart(CategoryDataset categorydataset, String chartTitle, String[] axeLabels) {
 		JFreeChart jfreechart = ChartFactory.createBarChart(chartTitle, axeLabels[0], axeLabels[1], categorydataset,
 				PlotOrientation.HORIZONTAL, false, true, false);
 		jfreechart.setBackgroundPaint(Color.white);
 		CategoryPlot categoryplot = (CategoryPlot) jfreechart.getPlot();
+
 		categoryplot.setBackgroundPaint(Color.lightGray);
 		categoryplot.setDomainGridlinePaint(Color.white);
 		categoryplot.setDomainGridlinesVisible(true);

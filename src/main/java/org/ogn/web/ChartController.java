@@ -27,37 +27,34 @@ public class ChartController {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/activerec", method = RequestMethod.GET)
+	@RequestMapping(value = "/online-rec", method = RequestMethod.GET)
 	public void drawActiveReceiversChart(HttpServletResponse response) {
 		drawActiveReceiversChart(response, 30);
 	}
 
-	@RequestMapping(value = "/activerec/{days}", method = RequestMethod.GET)
+	@RequestMapping(value = "/online-rec/{days}", method = RequestMethod.GET)
 	public void drawActiveReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
 		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
 
 		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
-		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers");
+		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers", "online receivers");
 
 		ChartUtils.drawChart(response, chart, 750, 400);
 	}
 
-	@RequestMapping(value = "/onlinerec-with-dist-aircraft/{days}", method = RequestMethod.GET)
+	@RequestMapping(value = "/dist-aircraft/{days}", method = RequestMethod.GET)
 	public void drawOnlineReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
 		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
 
-		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
-		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers");
-
-		XYDataset dataset2 = ChartUtils.createXYDataSet(dailyStats, "no. of distinct aircraft", "unique_aircraft_ids");
-		JFreeChart chart2 = ChartUtils.createTimeSeriesChart(dataset2, "Distinct aircraft received");
+		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "no. of distinct aircraft", "unique_aircraft_ids");
+		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "Distinct aircraft received",
+				"distinct aircraft ids");
 
 		ChartUtils.drawChart(response, chart, 750, 400);
-		ChartUtils.drawChart(response, chart2, 750, 400);
 	}
 
 	@RequestMapping(value = "/toprec-range/{count}", method = RequestMethod.GET)
