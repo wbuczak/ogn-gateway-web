@@ -51,16 +51,15 @@ public class ChartUtils {
 		return chart;
 	}
 
-	public static XYDataset createXYDataSet(List<Map<String, Object>> activeReceivers) {
+	public static XYDataset createXYDataSet(List<Map<String, Object>> dailyStats, final String timeSeriesName,
+			final String field) {
+		TimeSeries s1 = new TimeSeries(timeSeriesName);
 
-		TimeSeries s1 = new TimeSeries("OGN Active Receivers");
-
-		for (Map<String, Object> r : activeReceivers) {
+		for (Map<String, Object> r : dailyStats) {
 			Instant timestamp = Instant.ofEpochMilli((long) r.get("date"));
 			LocalDateTime datetime = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC);
 
-			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()),
-					(int) r.get("count"));
+			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()), (int) r.get(field));
 		}
 
 		final TimeSeries mav = MovingAverage.createMovingAverage(s1, "average", 30, 3);
@@ -70,6 +69,26 @@ public class ChartUtils {
 		dataset.addSeries(mav);
 		return dataset;
 	}
+
+//	public static XYDataset createXYDataSet(List<Map<String, Object>> dailyStats) {
+//
+//		TimeSeries s1 = new TimeSeries("OGN Online Receivers");
+//
+//		for (Map<String, Object> r : dailyStats) {
+//			Instant timestamp = Instant.ofEpochMilli((long) r.get("date"));
+//			LocalDateTime datetime = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC);
+//
+//			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()),
+//					(int) r.get("online_receivers"));
+//		}
+//
+//		final TimeSeries mav = MovingAverage.createMovingAverage(s1, "average", 30, 3);
+//
+//		final TimeSeriesCollection dataset = new TimeSeriesCollection();
+//		dataset.addSeries(s1);
+//		dataset.addSeries(mav);
+//		return dataset;
+//	}
 
 	public static JFreeChart createBarChart(CategoryDataset categorydataset, String chartTitle, String[] axeLabels) {
 		JFreeChart jfreechart = ChartFactory.createBarChart(chartTitle, axeLabels[0], axeLabels[1], categorydataset,

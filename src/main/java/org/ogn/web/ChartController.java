@@ -9,7 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.ogn.gateway.plugin.stats.TimeDateUtils;
-import org.ogn.gateway.plugin.stats.service.StatsReceiversService;
+import org.ogn.gateway.plugin.stats.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/charts")
 public class ChartController {
 
-	private StatsReceiversService rService;
+	private StatsService service;
 
 	@Autowired
-	public void setReceiversService(StatsReceiversService service) {
-		this.rService = service;
+	public void setReceiversService(StatsService service) {
+		this.service = service;
 	}
 
 	@RequestMapping(value = "/activerec", method = RequestMethod.GET)
@@ -36,12 +36,28 @@ public class ChartController {
 	public void drawActiveReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
-		List<Map<String, Object>> activeReceivers = rService.getActiveReceiversCounters(days);
+		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
 
-		XYDataset dataset = ChartUtils.createXYDataSet(activeReceivers);
-		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN active receivers");
+		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
+		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers");
 
 		ChartUtils.drawChart(response, chart, 750, 400);
+	}
+
+	@RequestMapping(value = "/onlinerec-with-dist-aircraft/{days}", method = RequestMethod.GET)
+	public void drawOnlineReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
+		response.setContentType("image/png");
+
+		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
+
+		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
+		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers");
+
+		XYDataset dataset2 = ChartUtils.createXYDataSet(dailyStats, "no. of distinct aircraft", "unique_aircraft_ids");
+		JFreeChart chart2 = ChartUtils.createTimeSeriesChart(dataset2, "Distinct aircraft received");
+
+		ChartUtils.drawChart(response, chart, 750, 400);
+		ChartUtils.drawChart(response, chart2, 750, 400);
 	}
 
 	@RequestMapping(value = "/toprec-range/{count}", method = RequestMethod.GET)
@@ -63,8 +79,8 @@ public class ChartController {
 			label = String.format("OGN Top %d ranges", count);
 		}
 
-		List<Map<String, Object>> topRangeList = d > 0 ? rService.getTopMaxRanges(d, count)
-				: rService.getTopMaxRanges(count);
+		List<Map<String, Object>> topRangeList = d > 0 ? service.getTopMaxRanges(d, count)
+				: service.getTopMaxRanges(count);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(topRangeList, ChartType.TOP_RECEIVERS_BY_RANGE);
 		JFreeChart chart = ChartUtils.createBarChart(dataset, label,
@@ -93,8 +109,8 @@ public class ChartController {
 		if (date != null)
 			d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = d > 0 ? rService.getTopReceptionCounters(d, limit)
-				: rService.getTopReceptionCounters(limit);
+		List<Map<String, Object>> list = d > 0 ? service.getTopReceptionCounters(d, limit)
+				: service.getTopReceptionCounters(limit);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list,
 				ChartType.TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS);
@@ -118,7 +134,7 @@ public class ChartController {
 
 		long d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = rService.getMaxAlts(d, limit);
+		List<Map<String, Object>> list = service.getMaxAlts(d, limit);
 
 		CategoryDataset dataset = ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
 
