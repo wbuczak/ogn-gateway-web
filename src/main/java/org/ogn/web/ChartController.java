@@ -41,7 +41,7 @@ public class ChartController {
 		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
 		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers", "online receivers");
 
-		ChartUtils.drawChart(response, chart, 750, 400);
+		ChartUtils.drawChart(response, chart, 760, 400);
 	}
 
 	@RequestMapping(value = "/dist-aircraft/{days}", method = RequestMethod.GET)
@@ -54,7 +54,7 @@ public class ChartController {
 		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "Distinct aircraft received",
 				"distinct aircraft ids");
 
-		ChartUtils.drawChart(response, chart, 750, 400);
+		ChartUtils.drawChart(response, chart, 760, 400);
 	}
 
 	@RequestMapping(value = "/toprec-range/{count}", method = RequestMethod.GET)
