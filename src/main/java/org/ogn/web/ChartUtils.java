@@ -79,7 +79,7 @@ public class ChartUtils {
 			s1.add(new Day(datetime.getDayOfMonth(), datetime.getMonthValue(), datetime.getYear()), (int) r.get(field));
 		}
 
-		final TimeSeries mav = MovingAverage.createMovingAverage(s1, "average", 30, 3);
+		final TimeSeries mav = MovingAverage.createMovingAverage(s1, "moving avg(30)", 30, 3);
 
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
