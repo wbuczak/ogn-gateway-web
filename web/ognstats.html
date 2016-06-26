@@ -10,8 +10,10 @@
 
   <script>
 
-  var baseUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com";
-  var baseServiceUrl=baseUrl+":8080";
+  var baseUrl="http://ognstats.ddns.net";
+  var baseServiceUrl=baseUrl+":8090";
+  var homeUser="/~odroid"
+  var httpWanPort=":8088";
 
   var init = function(dateText) {
      var chartUrl1 = baseServiceUrl+"/ogn-gateway-web/charts/toprec-range/"+dateText+"/20";
@@ -23,13 +25,13 @@
      var chartUrl3 = baseServiceUrl+"/ogn-gateway-web/charts/topalt/"+dateText+"/20";
      document.getElementById("chart3").innerHTML = "<img src="+"'"+chartUrl3+"'"+"/>";
       
-     var tableUrl1 = baseUrl+"/reception-range.html?date="+dateText;
+     var tableUrl1 = baseUrl+httpWanPort+homeUser+"/reception-range.html?date="+dateText;
      document.getElementById("iframe1").src = tableUrl1;
 
-     var tableUrl2 = baseUrl+"/beacons-count.html?date="+dateText;
+     var tableUrl2 = baseUrl+httpWanPort+homeUser+"/beacons-count.html?date="+dateText;
      document.getElementById("iframe2").src = tableUrl2;
      
-     var tableUrl3 = baseUrl+"/reception-maxalt.html?date="+dateText;
+     var tableUrl3 = baseUrl+httpWanPort+homeUser+"/reception-maxalt.html?date="+dateText;
      document.getElementById("iframe3").src = tableUrl3;
   };
 
@@ -50,6 +52,13 @@
   });
 
   </script>
+  
+  <style>
+    body {
+      background-color: white;
+    }
+</style>
+  
 </head>
 <body>
 

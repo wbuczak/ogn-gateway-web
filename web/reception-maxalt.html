@@ -5,21 +5,36 @@
   <title>OGN reception max altitude</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
-  
+  <script src="dirPagination.js"></script>
   <script type="text/javascript" src="func.js"></script>
   
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+  crossorigin="anonymous"/>
+
   <script>
   
      console.log('someParam GET value is', params['date']);
 
-     var baseServiceUrl="http://ec2-52-18-228-171.eu-west-1.compute.amazonaws.com:8080";
+     var baseServiceUrl="http://ognstats.ddns.net:8090";
      var context="/ogn-gateway-web/rest";
+     
+     var date = new Date().toISOString().substring(0, 10);
+     if (params['date']) {
+       date = params['date'];
+     }
 
-     var myUrl = baseServiceUrl + context + "/topalt-all/" + params['date'];
+     var myUrl = baseServiceUrl + context + "/topalt-all/" + date;
      
      console.log(myUrl);
   
-     var myApp = angular.module('myApp', []);
+     var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination']);
+     
+     myApp.config(function($httpProvider) {
+          $httpProvider.defaults.useXDomain = true;
+     });
+     
      myApp.controller('Ctrl1', function($scope, $http) {
            $http.get( myUrl ).success(function(data) {
               $scope.data = data;
@@ -43,12 +58,29 @@
     .even {
        background-color:#fff;
     }
+
+    th {
+       cursor:pointer;
+       padding: 2px;
+    }
+    td {
+       padding: 2px;
+    }
   </style>
 
 
 </head>
 
-<body ng-controller="Ctrl1">
+<body>
+
+<div>
+ <dir-pagination-controls
+       max-size="5"
+       direction-links="true"
+       boundary-links="true" >
+ </dir-pagination-controls>
+</div>
+<div ng-controller="Ctrl1">
   Search: <input ng-model="query" type="text" />
   <table>
     <tr>
@@ -58,13 +90,19 @@
       <th><a href="" ng-click="sortField = 'max_alt_aircraft_id'; reverse = !reverse">aircraft id</a></th>
       <th><a href="" ng-click="sortField = 'max_alt_timestamp'; reverse = !reverse" title="UTC time">time</a></th>
      </tr>
-     <tr ng-repeat="d in data | filter: greaterThan('max_alt', 0) | filter:query | orderBy:sortField:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
+     <tr dir-paginate="d in data | filter: greaterThan('max_alt', 0) | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
        <td> {{ d.max_alt | number:0 }} </td>  
        <td> {{ d.max_alt_aircraft_reg }} </td>
-       <td> {{ d.max_alt_aircraft_id }} </td>
+
+       <td> 
+         <a href="http://ktrax.kisstech.ch/cgi-bin/flarm-txrange.cgi?command=plot&flarmid={{ d.max_alt_aircraft_id.replace('FLR','flarm:').replace('ICA','icao:').replace('OGN','ogn:')}}" 
+            target="_blank">{{ d.max_alt_aircraft_id }}</a> 
+       </td>
+
        <td> {{ d.max_alt_timestamp | date:'HH:mm:ss' }} </td>
      </tr>
    </table>
+</div>
 </body>
 </html>
