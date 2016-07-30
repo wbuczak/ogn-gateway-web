@@ -101,7 +101,7 @@ print """
         <th><a href="" ng-click="sortField = 'date'; reverse = !reverse">date</a></th>      
       </tr>
       <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
-        <td> <a href="igc-list-files?date={{d.date}}" target="_blank"> {{d.date}} </a> </td>
+        <td> <a href="igc-list-files.py?date={{d.date}}">{{d.date}}</a> </td>
       </tr>
   </table>
 </div>
