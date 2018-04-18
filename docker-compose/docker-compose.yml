@@ -1,0 +1,27 @@
+version: '2'
+services:
+
+    ogn-gateway-stats:
+      image: ogndocker/ogn-gateway-stats:latest
+      hostname: ogn-gateway-stats
+      environment:
+        - OGN_GATEWAY_SIMULATION=false
+        - OGN_GATEWAY_LOG_DIR=/var/log/ogn-gateway
+        - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
+      ports:
+        - "61628:61628"
+      volumes:
+        - "C:/tmp/ogn/ogn-gateway/log/:/var/log/ogn-gateway"
+        - "C:/tmp/ogn/stats-db:/db"
+            
+    ogn-gateway-web:
+      image: ogndocker/ogn-gateway-web:latest
+      hostname: ogn-gateway-web
+      ports:
+        - "8080:8080"
+      environment:
+        - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
+      volumes:
+        - "C:/tmp/ogn/stats-db:/db"
+      links: 
+        - ogn-gateway-stats

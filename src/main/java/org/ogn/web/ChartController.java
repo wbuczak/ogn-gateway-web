@@ -36,11 +36,11 @@ public class ChartController {
 	public void drawActiveReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
-		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
+		final List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
 
-		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
+		final XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "OGN online receivers", "online_receivers");
 
-		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers", "online receivers");
+		final JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "OGN online receivers", "online receivers");
 
 		ChartUtils.drawChart(response, chart, 760, 420);
 	}
@@ -49,11 +49,12 @@ public class ChartController {
 	public void drawOnlineReceiversChart(HttpServletResponse response, @PathVariable("days") int days) {
 		response.setContentType("image/png");
 
-		List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
+		final List<Map<String, Object>> dailyStats = service.getDailyStatsForDays(days);
 
-		XYDataset dataset = ChartUtils.createXYDataSet(dailyStats, "no. of distinct aircraft", "unique_aircraft_ids");
-		JFreeChart chart = ChartUtils.createTimeSeriesChart(dataset, "Distinct aircraft received",
-				"distinct aircraft ids");
+		final XYDataset dataset =
+				ChartUtils.createXYDataSet(dailyStats, "no. of distinct aircraft", "unique_aircraft_ids");
+		final JFreeChart chart =
+				ChartUtils.createTimeSeriesChart(dataset, "Distinct aircraft received", "distinct aircraft ids");
 
 		ChartUtils.drawChart(response, chart, 760, 420);
 	}
@@ -77,12 +78,13 @@ public class ChartController {
 			label = String.format("OGN Top %d ranges", count);
 		}
 
-		List<Map<String, Object>> topRangeList = d > 0 ? service.getTopMaxRanges(d, count)
-				: service.getTopMaxRanges(count);
+		final List<Map<String, Object>> topRangeList =
+				d > 0 ? service.getTopMaxRanges(d, count) : service.getTopMaxRanges(count);
 
-		CategoryDataset dataset = ChartUtils.createCategoryDataset(topRangeList, ChartType.TOP_RECEIVERS_BY_RANGE);
-		JFreeChart chart = ChartUtils.createBarChart(dataset, label,
-				new String[] { "Receiver", "max. reception range [km]" });
+		final CategoryDataset dataset =
+				ChartUtils.createCategoryDataset(topRangeList, ChartType.TOP_RECEIVERS_BY_RANGE);
+		final JFreeChart chart =
+				ChartUtils.createBarChart(dataset, label, new String[]{"Receiver", "max. reception range [km]"});
 
 		int height = 600;
 
@@ -107,14 +109,14 @@ public class ChartController {
 		if (date != null)
 			d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = d > 0 ? service.getTopReceptionCounters(d, limit)
-				: service.getTopReceptionCounters(limit);
+		final List<Map<String, Object>> list =
+				d > 0 ? service.getTopReceptionCounters(d, limit) : service.getTopReceptionCounters(limit);
 
-		CategoryDataset dataset = ChartUtils.createCategoryDataset(list,
-				ChartType.TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS);
+		final CategoryDataset dataset =
+				ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_NUMBER_OF_RECEPTIONS);
 
-		JFreeChart chart = ChartUtils.createBarChart(dataset, String.format("OGN Top %d (%s)", limit, date),
-				new String[] { "Receiver", "aircraft beacons count" });
+		final JFreeChart chart = ChartUtils.createBarChart(dataset, String.format("OGN Top %d (%s)", limit, date),
+				new String[]{"Receiver", "aircraft beacons count"});
 
 		int height = 600;
 
@@ -130,14 +132,15 @@ public class ChartController {
 			@PathVariable("limit") int limit) {
 		response.setContentType("image/png");
 
-		long d = TimeDateUtils.fromString(date);
+		final long d = TimeDateUtils.fromString(date);
 
-		List<Map<String, Object>> list = service.getMaxAlts(d, limit);
+		final List<Map<String, Object>> list = service.getMaxAlts(d, limit);
 
-		CategoryDataset dataset = ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
+		final CategoryDataset dataset =
+				ChartUtils.createCategoryDataset(list, ChartType.TOP_RECEIVERS_BY_MAX_RECEPTION_ALT);
 
-		JFreeChart chart = ChartUtils.createBarChart(dataset, String.format("OGN Top %d altitudes", limit),
-				new String[] { "Receiver", "aircraft alt [m]" });
+		final JFreeChart chart = ChartUtils.createBarChart(dataset, String.format("OGN Top %d altitudes", limit),
+				new String[]{"Receiver", "aircraft alt [m]"});
 
 		int height = 600;
 
