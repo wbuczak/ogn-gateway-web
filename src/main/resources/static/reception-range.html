@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <title>OGN reception range</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+  <script src="dirPagination.js"></script>
+  <script type="text/javascript" src="func.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+  crossorigin="anonymous"/>
+  
+  <script>
+  
+     console.log('someParam GET value is', params['date']);
+
+     var baseServiceUrl="http://ognstats.ddns.net:80";
+     var context="/rest";
+     
+     var date = new Date().toISOString().substring(0, 10);
+     if (params['date']) {
+       date = params['date'];
+     }
+
+     var myUrl = baseServiceUrl + context + "/toprange-all/" + date;
+     
+     console.log(myUrl);
+  
+
+     var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination']);
+     
+     myApp.controller('Ctrl1', function($scope, $http) {
+           $http.get( myUrl ).success(function(data) {
+              $scope.data = data;
+           });
+           
+           $scope.sortField = 'range';
+           $scope.reverse = true;
+     });
+  </script>
+  
+  <style type="text/css">
+    .odd {
+       background-color:#eee;
+    }
+    .even {
+       background-color:#fff;
+    }
+
+    th {
+       cursor:pointer;
+       padding: 2px;
+    }
+    td {
+       padding: 2px;
+    }
+  </style>
+
+</head>
+
+<body>
+<div>
+ <dir-pagination-controls
+       max-size="5"
+       direction-links="true"
+       boundary-links="true" >
+ </dir-pagination-controls>
+</div>
+<div ng-controller="Ctrl1">
+  Search: <input ng-model="query" type="text" />
+  <table>
+    <tr>
+      <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>            
+      <th><a href="" ng-click="sortField = 'range'; reverse = !reverse" title="distance in km">range</a></th>
+      <th><a href="" ng-click="sortField = 'alt'; reverse = !reverse" title="altitude in m (QNH)">alt</a></th>
+      <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
+      <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
+      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse" title="UTC time">time</a></th>
+     </tr>
+     <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
+       <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
+       <td> {{ d.range }} </td>
+       <td> {{ d.alt | number:0 }} </td>
+       <td> {{ d.aircraft_reg }} </td>
+
+       <td> 
+         <a href="http://ktrax.kisstech.ch/cgi-bin/flarm-txrange.cgi?command=plot&flarmid={{ d.aircraft_id.replace('FLR','flarm:').replace('ICA','icao:').replace('OGN','ogn:') }}" 
+             target="_blank">{{ d.aircraft_id }}</a> 
+       </td>
+
+       <td> {{ d.timestamp | date:'HH:mm:ss' }} </td>
+     </tr>
+   </table>
+</div>
+</body>
+</html>
