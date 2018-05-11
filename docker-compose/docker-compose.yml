@@ -16,12 +16,20 @@ services:
             
     ogn-gateway-web:
       image: ogndocker/ogn-gateway-web:latest
-      hostname: ogn-gateway-web
-      ports:
-        - "8080:8080"
+      hostname: ogn-gateway-web     
       environment:
         - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
       volumes:
         - "C:/tmp/ogn/stats-db:/db"
       links: 
         - ogn-gateway-stats
+                
+    ogn-gateway-web-nginx:
+      image: ogndocker/ogn-gateway-web-nginx:latest
+      hostname: ogn-gateway-web-nginx
+      ports:
+        - "80:80"
+      volumes:
+        - "C:/tmp/ogn/igc:/igc"
+      links: 
+        - ogn-gateway-web        

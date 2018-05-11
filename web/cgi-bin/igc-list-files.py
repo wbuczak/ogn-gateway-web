@@ -6,7 +6,7 @@ from glob import glob
 params = cgi.FieldStorage();
 date = params["date"].value 
 
-files = glob("/var/www/html/igc/"+date+"/*.IGC")
+files = glob("/igc/"+date+"/*.IGC")
 
 table_data = []
  

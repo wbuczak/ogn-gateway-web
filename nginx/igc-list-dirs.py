@@ -27,8 +27,8 @@ print """
   <title>OGN IGC log folders</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
-  <script src="./dirPagination.js"></script>
-  <script type="text/javascript" src="./func.js"></script>
+  <script src="/dirPagination.js"></script>
+  <script type="text/javascript" src="/func.js"></script>
   
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
