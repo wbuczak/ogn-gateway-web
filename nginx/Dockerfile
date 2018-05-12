@@ -18,11 +18,17 @@ RUN set -x \
 	&& \
 	curl http://uwsgi.it/install | bash -s cgi /usr/local/bin/uwsgi
 
-# TODO: uninstall unecessary stuff (build-essential)
+# Uninstall unecessary stuff
+RUN set -x \        
+	&& apt-get remove -y build-essential \
+	&& apt-get remove -y make \
+	&& apt-get -y autoremove \
+	&& apt-get remove -y python \
+	&& apt-get remove -y curl
+	
 
 # Copy custom configuration file from the current directory
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY uwsgi_config.ini /etc/nginx/uwsgi_config.ini
+COPY nginx.conf uwsgi_config.ini /etc/nginx/
 
 RUN mkdir /usr/lib/cgi-bin
 COPY hello.py igc-list-dirs.py igc-list-files.py /usr/lib/cgi-bin/
@@ -33,7 +39,9 @@ RUN mkdir /igc
 EXPOSE 80
 
 COPY docker-entrypoint.sh /
-#COPY /docker-entrypoint.d/* /docker-entrypoint.d/
-#ONBUILD COPY /docker-entrypoint.d/* /docker-entrypoint.d/
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
+ONBUILD COPY docker-entrypoint.d/* /docker-entrypoint.d/
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
 CMD ["nginx", "-g", "daemon off;"]

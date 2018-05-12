@@ -1,13 +1,10 @@
-#!/bin/bash
-set -e
+#!/bin/sh
 
-# TODO: improve: https://www.camptocamp.com/en/actualite/flexible-docker-entrypoints-scripts/
+DIR=/docker-entrypoint.d
 
-#if [ "$1" = 'nginx' ]; then
-echo "Starting uwsqi.."
-sudo -u www-data /usr/local/bin/uwsgi /etc/nginx/uwsgi_config.ini &
-#  /usr/sbin/nginx -g 'daemon off;'
-#fi
+if test -d "$DIR"
+then
+  /bin/run-parts --verbose --regex '\.sh$' "$DIR" || exit 1
+fi
 
-echo "running $@"
 exec "$@"
