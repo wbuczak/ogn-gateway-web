@@ -101,11 +101,12 @@ print """
   Search: <input ng-model="query" type="text" />
   <table>
       <tr>
-        <th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th> <th></th>      
+        <th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th> <th></th>
       </tr>
       <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:100" ng-class-odd="'odd'" ng-class-even="'even'">
-        <td> <a href="../igc/{{ldate}}/{{d.file}}"> {{d.file}} </a> </td>
-        <td> <a href="http://cunimb.net/igc2map.php?lien=http://localhost/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;M</a> </td>
+        <td> <a href="../igc/{{ldate}}/{{d.file}}" download> {{d.file}} </a> </td>
+        <td> <a href="http://cunimb.net/igc2map.php?lien=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
+        <td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
       </tr>
   </table>
  </div>
