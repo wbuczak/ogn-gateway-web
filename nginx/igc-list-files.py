@@ -1,18 +1,20 @@
 #!/usr/bin/python
 
 import cgi
+import os
 from glob import glob
 
 params = cgi.FieldStorage();
 date = params["date"].value 
 
-files = glob("/igc/"+date+"/*.IGC")
+basedir = "/igc"
+files = glob(basedir + "/"+date+"/*.IGC")
 
 table_data = []
  
 for f in files:
-   fname = f.split("/")[-1]
-   table_data.append(fname)
+   fname = f.split("/")[-1]   
+   table_data.append((fname, os.stat(os.path.join(basedir + "/"+date, fname)).st_size))
 
 print "Content-Type: text/html"
 print
@@ -35,7 +37,12 @@ print """
   crossorigin="anonymous"/>
 
   <script>
-     var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination']);
+     var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination'])
+       .filter('formatFileSize', function() {
+         return function(input) { 
+		   return humanFileSize(input);
+		 };
+        });	 
      
      myApp.config(function($httpProvider) {
           $httpProvider.defaults.useXDomain = true;
@@ -45,8 +52,8 @@ print """
            $scope.data = [ 
 """
 for f in table_data[:-1]:
-   print "{ file:'"+f+"'},"
-print "{ file:'"+table_data[-1]+"'}"
+   print "{ file:'"+f[0]+"', size: '"+str(f[1])+"'},"
+print "{ file:'"+table_data[-1][0]+"', size: '"+str(table_data[-1][1])+"'}"
 
 print """
            ];
@@ -101,10 +108,14 @@ print """
   Search: <input ng-model="query" type="text" />
   <table>
       <tr>
-        <th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th> <th></th>
+        <th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th>
+		<th><a href="" ng-click="sortField = 'size'; reverse = !reverse">size</a></th>
+		<th></th>
+		<th></th>
       </tr>
       <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:100" ng-class-odd="'odd'" ng-class-even="'even'">
         <td> <a href="../igc/{{ldate}}/{{d.file}}" download> {{d.file}} </a> </td>
+		<td> {{d.size | formatFileSize}} </td>
         <td> <a href="http://cunimb.net/igc2map.php?lien=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
         <td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
       </tr>
