@@ -47,20 +47,14 @@ print """
 """
 
 for d in table_data[:-1]:
-   print "{ date:'"+d+"'},"
-print "{ date:'"+table_data[-1]+"'}"
+   print "{ 'date':'"+d+"'},"
+print "{ 'date':'"+table_data[-1]+"'}"
 
 print """
            ];
            
            $scope.sortField = 'date';
            $scope.reverse = true;
-           
-           $scope.greaterThan = function(prop, val){
-             return function(item){
-               return item[prop] > val;
-             }
-           }
      });
 
   </script>
@@ -97,12 +91,12 @@ print """
 <div ng-controller="Ctrl1">
   Search: <input ng-model="query" type="text" />
   <table>
-      <tr>
-        <th><a href="" ng-click="sortField = 'date'; reverse = !reverse">date</a></th>      
-      </tr>
-      <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
-        <td> <a href="igc-list-files.py?date={{d.date}}">{{d.date}}</a> </td>
-      </tr>
+	<tr>
+		<th><a href="" ng-click="sortField = 'date'; reverse = !reverse">date</a></th>
+	</tr>
+	<tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
+		<td> <a href="igc-list-files.py?date={{d.date}}">{{d.date}}</a> </td>
+	</tr>
   </table>
 </div>
 

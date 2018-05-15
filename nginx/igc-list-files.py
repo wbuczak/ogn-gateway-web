@@ -40,8 +40,8 @@ print """
      var myApp = angular.module('myApp', ['angularUtils.directives.dirPagination'])
        .filter('formatFileSize', function() {
          return function(input) { 
-		   return humanFileSize(input);
-		 };
+           return humanFileSize(input);
+         };
         });	 
      
      myApp.config(function($httpProvider) {
@@ -52,22 +52,18 @@ print """
            $scope.data = [ 
 """
 for f in table_data[:-1]:
-   print "{ file:'"+f[0]+"', size: '"+str(f[1])+"'},"
-print "{ file:'"+table_data[-1][0]+"', size: '"+str(table_data[-1][1])+"'}"
+   print "{ 'file':'"+f[0]+"', 'size': "+str(f[1])+"},"
+print "{ 'file':'"+table_data[-1][0]+"', 'size': "+str(table_data[-1][1])+"}"
 
 print """
            ];
 
            $scope.sortField = 'file';
            $scope.reverse = true;
-           
-           $scope.greaterThan = function(prop, val){
-             return function(item){
-               return item[prop] > val;
-             }
-           }
 """
-print "$scope.ldate="+"'"+date+"'"
+print """
+           $scope.ldate="""+"'"+date+"'"
+
 
 print """
 
@@ -107,18 +103,18 @@ print """
  <div ng-controller="Ctrl1">
   Search: <input ng-model="query" type="text" />
   <table>
-      <tr>
-        <th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th>
+	<tr>
+		<th><a href="" ng-click="sortField = 'file'; reverse = !reverse">file</a></th>
 		<th><a href="" ng-click="sortField = 'size'; reverse = !reverse">size</a></th>
 		<th></th>
 		<th></th>
-      </tr>
-      <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:100" ng-class-odd="'odd'" ng-class-even="'even'">
-        <td> <a href="../igc/{{ldate}}/{{d.file}}" download> {{d.file}} </a> </td>
+	</tr>
+	<tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:100" ng-class-odd="'odd'" ng-class-even="'even'">
+		<td> <a href="../igc/{{ldate}}/{{d.file}}" download> {{d.file}} </a> </td>
 		<td> {{d.size | formatFileSize}} </td>
-        <td> <a href="http://cunimb.net/igc2map.php?lien=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
-        <td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
-      </tr>
+		<td> <a href="http://cunimb.net/igc2map.php?lien=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
+		<td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
+	</tr>
   </table>
  </div>
 
