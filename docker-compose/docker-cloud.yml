@@ -22,10 +22,11 @@ ogn-gateway-web:
   environment:
     - JVM_OPTS=-Xmx220m
     - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
+    - OGN_GATEWAY_IGC_BASE_URL=http://webproxy/igc
   hostname: ogn-gateway-web
   image: 'ogndocker/ogn-gateway-web:latest'
   links:
-    - ogn-gateway-stats
+    - ogn-gateway-web-nginx:webproxy
   mem_limit: 300m
   restart: on-failure
   volumes:
@@ -38,8 +39,6 @@ ogn-gateway-web-nginx:
   ports:
     - '80:80'
   volumes:
-    - '/ogn/ogn-gateway/logs/igc:/igc'
-  links: 
-    - ogn-gateway-web
+    - '/ogn/ogn-gateway/logs/igc:/igc'  
   mem_limit: 300m
   restart: on-failure
