@@ -59,27 +59,27 @@ public class ChartController {
 		ChartUtils.drawChart(response, chart, 760, 420);
 	}
 
-	@RequestMapping(value = "/toprec-range/{count}", method = RequestMethod.GET)
-	public void drawTopRangeReceiversChart(HttpServletResponse response, @PathVariable("count") int count) {
-		drawTopRangeReceiversChart(response, null, count);
+	@RequestMapping(value = "/toprec-range/{limit}", method = RequestMethod.GET)
+	public void drawTopRangeReceiversChart(HttpServletResponse response, @PathVariable("limit") int limit) {
+		drawTopRangeReceiversChart(response, null, limit);
 	}
 
-	@RequestMapping(value = "/toprec-range/{date}/{count}", method = RequestMethod.GET)
+	@RequestMapping(value = "/toprec-range/{date}/{limit}", method = RequestMethod.GET)
 	public void drawTopRangeReceiversChart(HttpServletResponse response, @PathVariable("date") String date,
-			@PathVariable("count") int count) {
+			@PathVariable("limit") int limit) {
 		response.setContentType("image/png");
 
 		long d = 0L;
 		String label = null;
 		if (date != null) {
 			d = TimeDateUtils.fromString(date);
-			label = String.format("OGN Top %d ranges (%s)", count, date);
+			label = String.format("OGN Top %d ranges (%s)", limit, date);
 		} else {
-			label = String.format("OGN Top %d ranges", count);
+			label = String.format("OGN Top %d ranges", limit);
 		}
 
 		final List<Map<String, Object>> topRangeList =
-				d > 0 ? service.getTopMaxRanges(d, count) : service.getTopMaxRanges(count);
+				d > 0 ? service.getTopMaxRanges(d, limit) : service.getTopMaxRanges(limit);
 
 		final CategoryDataset dataset =
 				ChartUtils.createCategoryDataset(topRangeList, ChartType.TOP_RECEIVERS_BY_RANGE);
@@ -88,8 +88,8 @@ public class ChartController {
 
 		int height = 600;
 
-		if (count > 30) {
-			height = count * 20;
+		if (limit > 30) {
+			height = limit * 20;
 		}
 
 		ChartUtils.drawChart(response, chart, 950, height);

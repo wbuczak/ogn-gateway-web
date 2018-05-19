@@ -79,6 +79,7 @@
       <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
       <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
       <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse" title="UTC time">time</a></th>
+	  <th>igc</th>
      </tr>
      <tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
@@ -92,6 +93,12 @@
        </td>
 
        <td> {{ d.timestamp | date:'HH:mm:ss' }} </td>
+	   
+       <td> 	     
+         <a href="http://cunimb.net/igc2map.php?lien={{ d.igc_url }}" ng-hide="d.igc_url == null" target="_blank"><img src="map-pin.png" /></a> 		 
+       </td>
+
+	   
      </tr>
    </table>
 </div>

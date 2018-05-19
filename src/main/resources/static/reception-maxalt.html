@@ -18,6 +18,7 @@
      console.log('someParam GET value is', params['date']);
 
      var baseServiceUrl="http://ognstats.ddns.net:80";
+	 
      var context="/rest";
      
      var date = new Date().toISOString().substring(0, 10);
@@ -40,7 +41,7 @@
               $scope.data = data;
            });
            
-           $scope.sortField = 'max_alt';
+           $scope.sortField = 'alt';
            $scope.reverse = true;
            
            $scope.greaterThan = function(prop, val){
@@ -85,22 +86,26 @@
   <table>
     <tr>
       <th><a href="" ng-click="sortField = 'receiver_name'; reverse = !reverse">receiver</a></th>      
-      <th><a href="" ng-click="sortField = 'max_alt'; reverse = !reverse" title="altitude in m (QNH)">max alt</a></th>
-      <th><a href="" ng-click="sortField = 'max_alt_aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
-      <th><a href="" ng-click="sortField = 'max_alt_aircraft_id'; reverse = !reverse">aircraft id</a></th>
-      <th><a href="" ng-click="sortField = 'max_alt_timestamp'; reverse = !reverse" title="UTC time">time</a></th>
+      <th><a href="" ng-click="sortField = 'alt'; reverse = !reverse" title="altitude in m (QNH)">max alt</a></th>
+      <th><a href="" ng-click="sortField = 'aircraft_reg'; reverse = !reverse">aircraft reg</a></th>
+      <th><a href="" ng-click="sortField = 'aircraft_id'; reverse = !reverse">aircraft id</a></th>
+      <th><a href="" ng-click="sortField = 'timestamp'; reverse = !reverse" title="UTC time">time</a></th>
+	  <th>igc</th>
      </tr>
-     <tr dir-paginate="d in data | filter: greaterThan('max_alt', 0) | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
+     <tr dir-paginate="d in data | filter: greaterThan('alt', 0) | filter:query | orderBy:sortField:reverse | itemsPerPage:20" ng-class-odd="'odd'" ng-class-even="'even'">
        <td> <a href="http://ognrange.onglide.com/#{{ d.receiver_name }}" target="_blank"> {{ d.receiver_name }}</a></td>       
-       <td> {{ d.max_alt | number:0 }} </td>  
-       <td> {{ d.max_alt_aircraft_reg }} </td>
+       <td> {{ d.alt | number:0 }} </td>  
+       <td> {{ d.aircraft_reg }} </td>
 
        <td> 
-         <a href="http://ktrax.kisstech.ch/cgi-bin/flarm-txrange.cgi?command=plot&flarmid={{ d.max_alt_aircraft_id.replace('FLR','flarm:').replace('ICA','icao:').replace('OGN','ogn:')}}" 
-            target="_blank">{{ d.max_alt_aircraft_id }}</a> 
+         <a href="http://ktrax.kisstech.ch/cgi-bin/flarm-txrange.cgi?command=plot&flarmid={{ d.aircraft_id.replace('FLR','flarm:').replace('ICA','icao:').replace('OGN','ogn:')}}" 
+            target="_blank">{{ d.aircraft_id }}</a>
        </td>
 
-       <td> {{ d.max_alt_timestamp | date:'HH:mm:ss' }} </td>
+       <td> {{ d.timestamp | date:'HH:mm:ss' }} </td>
+	   <td> 	     
+         <a href="http://cunimb.net/igc2map.php?lien={{ d.igc_url }}" ng-hide="d.igc_url == null" target="_blank"><img src="map-pin.png" /></a> 		 
+       </td>
      </tr>
    </table>
 </div>
