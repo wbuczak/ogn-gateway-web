@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rest")
 public class StatsRESTController {
 
-	@Value("${OGN_GATEWAY_IGC_BASE_URL:http://ognstats.ddns.net/igc}")
+	@Value("${OGN_GATEWAY_IGC_BASE_URL:http://ognstats.ddns.net/igc/}")
 	private String			igcBaseUrl;
+
+	@Value("${OGN_GATEWAY_IGC_FILES_BASE_URL}")
+	private String			igcFilesBaseUrl;
 
 	private StatsService	service;
 
@@ -28,7 +31,7 @@ public class StatsRESTController {
 
 	@PostConstruct
 	public void init() {
-		igcUrlCache = new IgcUrlCache(igcBaseUrl);
+		igcUrlCache = new IgcUrlCache(igcBaseUrl, igcFilesBaseUrl);
 	}
 
 	@Autowired
