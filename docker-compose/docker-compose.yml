@@ -6,6 +6,7 @@ services:
       hostname: ogn-gateway-stats
       environment:
         - OGN_GATEWAY_SIMULATION=false
+        - OGN_GATEWAY_APRS_FILTER="t/* -p/FNT"
         - OGN_GATEWAY_LOG_DIR=/var/log/ogn-gateway
         - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
       ports:
@@ -19,8 +20,11 @@ services:
       hostname: ogn-gateway-web     
       environment:
         - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
+        - OGN_GATEWAY_IGC_BASE_URL=http://proxy/igc/        
+      links:
+        - ogn-gateway-web-nginx:proxy
       volumes:
-        - "C:/tmp/ogn/stats-db:/db"
+        - "C:/tmp/ogn/stats-db:/db"        
 
     ogn-gateway-web-nginx:
       image: ogndocker/ogn-gateway-web-nginx:latest

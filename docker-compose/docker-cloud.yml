@@ -1,14 +1,15 @@
 # ogn stack definition for docker cloud
 ogn-gateway-stats:
+  image: 'ogndocker/ogn-gateway-stats:latest'
+  hostname: ogn-gateway-stats
   environment:
     - JVM_OPTS=-Xmx128m
     - OGN_GATEWAY_IGC_ENABLED=true
     - OGN_GATEWAY_IGC_FOLDER=/var/log/ogn-gateway/igc
     - OGN_GATEWAY_LOG_DIR=/var/log/ogn-gateway
     - OGN_GATEWAY_SIMULATION=false
+    - OGN_GATEWAY_APRS_FILTER='t/* -p/FNT'
     - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
-  hostname: ogn-gateway-stats
-  image: 'ogndocker/ogn-gateway-stats:latest'
   mem_limit: 300m
   ports:
     - '61628:61628'
@@ -17,21 +18,20 @@ ogn-gateway-stats:
     - '/ogn/ogn-gateway/logs:/var/log/ogn-gateway'
     - '/ogn/stats:/db'
 
-
 ogn-gateway-web:
+  image: 'ogndocker/ogn-gateway-web:latest'
+  hostname: ogn-gateway-web
   environment:
     - JVM_OPTS=-Xmx220m
     - OGN_GATEWAY_STATS_DB_PATH=/db/ogn-stats.db
-    - OGN_GATEWAY_IGC_BASE_URL=http://webproxy/igc
-  hostname: ogn-gateway-web
-  image: 'ogndocker/ogn-gateway-web:latest'
+    - OGN_GATEWAY_IGC_BASE_URL=http://proxy/igc/  
+    - OGN_GATEWAY_IGC_FILES_BASE_URL=http://ognstats.ddns.net/igc/
   links:
-    - ogn-gateway-web-nginx:webproxy
+    - ogn-gateway-web-nginx:proxy
   mem_limit: 300m
   restart: on-failure
   volumes:
     - '/ogn/stats:/db'
-
 
 ogn-gateway-web-nginx:
   image: ogndocker/ogn-gateway-web-nginx:latest
