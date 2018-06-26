@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rest")
 public class StatsRESTController {
 
-	@Value("${OGN_GATEWAY_IGC_BASE_URL:http://ognstats.ddns.net/igc/}")
+	@Value("${OGN_GATEWAY_IGC_BASE_URL:http://stats.ogn.aero/igc/}")
 	private String			igcBaseUrl;
 
 	@Value("${OGN_GATEWAY_IGC_FILES_BASE_URL}")
