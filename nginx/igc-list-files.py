@@ -112,8 +112,8 @@ print """
 	<tr dir-paginate="d in data | filter:query | orderBy:sortField:reverse | itemsPerPage:100" ng-class-odd="'odd'" ng-class-even="'even'">
 		<td> <a href="../igc/{{ldate}}/{{d.file}}" download> {{d.file}} </a> </td>
 		<td> {{d.size | formatFileSize}} </td>
-		<td> <a href="http://cunimb.net/igc2map.php?lien=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
-		<td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://ognstats.ddns.net/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
+		<td> <a href="http://cunimb.net/igc2map.php?lien=http://stats.ogn.aero/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M1 ]</a> </td>
+		<td> <a href="http://www.victorb.fr/visugps/visugps.html?track=http://stats.ogn.aero/igc/{{ldate}}/{{d.file}}"> &nbsp;&nbsp;[ M2 ]</a> </td>
 	</tr>
   </table>
  </div>
